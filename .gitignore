@@ -92,3 +92,7 @@ iOSInjectionProject/
 # Sensitive Data
 
 Keys.swift
+
+# Generated
+
+*.generated.swift
