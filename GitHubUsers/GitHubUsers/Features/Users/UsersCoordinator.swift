@@ -8,7 +8,12 @@
 
 import UIKit
 
-class UsersCoordinator: Coordinator {
+enum UsersPath: CoordinatorPath {
+    case details(basicUser: BasicUser)
+}
+protocol UsersCoordinatorProtocol: Coordinator {}
+
+class UsersCoordinator: UsersCoordinatorProtocol {
     var navigationController: UINavigationController
 
     required init(navigationController: UINavigationController) {
@@ -16,11 +21,16 @@ class UsersCoordinator: Coordinator {
     }
 
     func start() {
-
+        let viewController = UsersListViewController(viewModel: UsersListViewModel(coordinator: self))
+        navigationController.pushViewController(viewController, animated: false)
     }
 
     func route(path: CoordinatorPath) {
-
+        guard let path = path as? UsersPath else { return }
+        switch path {
+        case .details(let basicUser):
+            print(basicUser.login) // TODO:
+        }
     }
 
 

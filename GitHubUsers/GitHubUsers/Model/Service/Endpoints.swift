@@ -5,43 +5,46 @@
 //  Created by Igor Vaz on 13/03/20.
 //  Copyright © 2020 Igor Vaz. All rights reserved.
 //
+import Foundation
 
 protocol Endpoint {
-    var path: String { get }
-    var url: String { get }
+    var url: URL? { get }
 }
 
 struct API {
-    static let baseUrl = "https://api.github.com"
+    static let scheme = "https"
+    static let baseUrl = "api.github.com"
 }
 
 class Endpoints {
 
-    private static func getUrl(path: String) -> String {
-        return "\(API.baseUrl)\(path)"
+    static func buildURL(path: String, queryItems: [URLQueryItem] = [URLQueryItem]()) -> URL? {
+        var components = URLComponents()
+        components.scheme = API.scheme
+        components.host = API.baseUrl
+        components.path = path
+        components.queryItems = queryItems
+        components.queryItems?.append(URLQueryItem(name: "per_page", value: "20"))
+        return components.url
     }
 
     enum Users: Endpoint {
-        case getUsers(offset: Int)
+        case getUsers(lastUserId: Int)
         case searchUsers(searchText: String, page: Int)
         case getUser(userLogin: String)
         case repositories(userLogin: String, page: Int)
 
-        var path: String {
+        var url: URL? {
             switch self {
-            case .getUsers(let offset):
-                return "/users?since=\(offset)&per_page=20"
+            case .getUsers(let lastUserId):
+                return buildURL(path: "/users", queryItems: [URLQueryItem(name: "since", value: "\(lastUserId)")])
             case .searchUsers(let searchText, let page):
-                return "/search/users?q=\"\(searchText)\"page=\(page)&per_page=20"
+                return buildURL(path: "/search/users", queryItems: [URLQueryItem(name: "q", value: searchText), URLQueryItem(name: "page", value: "\(page)")])
             case .getUser(let userLogin):
-                return "/users/\(userLogin)"
+                return buildURL(path: "/users/\(userLogin)")
             case .repositories(let userLogin, let page):
-                return "/users/\(userLogin)/repos?page=\(page)&per_page=20"
+                return buildURL(path: "/users/\(userLogin)/repos", queryItems: [URLQueryItem(name: "page", value: "\(page)")])
             }
-        }
-
-        var url: String {
-            return Endpoints.getUrl(path: path)
         }
     }
 

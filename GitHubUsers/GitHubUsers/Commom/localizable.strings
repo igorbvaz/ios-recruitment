@@ -1,0 +1,12 @@
+/* 
+  localizable.strings
+  GitHubUsers
+
+  Created by Igor Vaz on 14/03/20.
+  Copyright © 2020 Igor Vaz. All rights reserved.
+*/
+
+gitHub = "GitHub";
+searchGitHubUsers = "Busque usuários do GitHub";
+noResults = "Nenhum resultado encontrado";
+loading = "Carregando...";

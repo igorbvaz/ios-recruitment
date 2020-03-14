@@ -9,14 +9,14 @@
 import RxSwift
 
 protocol UsersServiceProtocol {
-    func getUsers(offset: Int) -> Observable<Result<[BasicUser]>>
+    func getUsers(lastUserId: Int) -> Observable<Result<[BasicUser]>>
     func searchUsers(searchText: String, page: Int) -> Observable<Result<SearchUsersResponse>>
     func getUser(userLogin: String) -> Observable<Result<User>>
     func repositories(userLogin: String, page: Int) -> Observable<Result<[Repository]>>
 }
 class UsersService: Service, UsersServiceProtocol {
-    func getUsers(offset: Int) -> Observable<Result<[BasicUser]>> {
-        return requestArray(url: Endpoints.Users.getUsers(offset: offset).url, method: .get, parameters: nil)
+    func getUsers(lastUserId: Int) -> Observable<Result<[BasicUser]>> {
+        return requestArray(url: Endpoints.Users.getUsers(lastUserId: lastUserId).url, method: .get, parameters: nil)
     }
 
     func searchUsers(searchText: String, page: Int) -> Observable<Result<SearchUsersResponse>> {
