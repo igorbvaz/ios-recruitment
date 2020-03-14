@@ -101,14 +101,10 @@
 		7889399F241C608500E8019F /* GitHubUsers */ = {
 			isa = PBXGroup;
 			children = (
-				788939A0241C608500E8019F /* AppDelegate.swift */,
-				788939A2241C608500E8019F /* SceneDelegate.swift */,
-				788939A4241C608500E8019F /* ViewController.swift */,
-				788939A6241C608500E8019F /* Main.storyboard */,
-				788939AC241C608800E8019F /* Assets.xcassets */,
-				788939AE241C608800E8019F /* LaunchScreen.storyboard */,
-				788939B1241C608800E8019F /* Info.plist */,
-				788939A9241C608500E8019F /* GitHubUsers.xcdatamodeld */,
+				788939D6241C610600E8019F /* Commom */,
+				788939D5241C610300E8019F /* View */,
+				788939D4241C60FE00E8019F /* Model */,
+				788939D3241C60F500E8019F /* Features */,
 			);
 			path = GitHubUsers;
 			sourceTree = "<group>";
@@ -129,6 +125,98 @@
 				788939C7241C608800E8019F /* Info.plist */,
 			);
 			path = GitHubUsersUITests;
+			sourceTree = "<group>";
+		};
+		788939D3241C60F500E8019F /* Features */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		788939D4241C60FE00E8019F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				788939DC241C613C00E8019F /* Entity */,
+				788939DB241C613700E8019F /* Service */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		788939D5241C610300E8019F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				788939DA241C613100E8019F /* Cell */,
+				788939D9241C612A00E8019F /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		788939D6241C610600E8019F /* Commom */ = {
+			isa = PBXGroup;
+			children = (
+				788939D8241C611F00E8019F /* Extensions */,
+				788939D7241C611600E8019F /* Base */,
+				788939A0241C608500E8019F /* AppDelegate.swift */,
+				788939A2241C608500E8019F /* SceneDelegate.swift */,
+				788939A4241C608500E8019F /* ViewController.swift */,
+				788939A6241C608500E8019F /* Main.storyboard */,
+				788939AC241C608800E8019F /* Assets.xcassets */,
+				788939AE241C608800E8019F /* LaunchScreen.storyboard */,
+				788939B1241C608800E8019F /* Info.plist */,
+				788939A9241C608500E8019F /* GitHubUsers.xcdatamodeld */,
+			);
+			path = Commom;
+			sourceTree = "<group>";
+		};
+		788939D7241C611600E8019F /* Base */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		788939D8241C611F00E8019F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		788939D9241C612A00E8019F /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		788939DA241C613100E8019F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		788939DB241C613700E8019F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				788939DD241C614100E8019F /* Response */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		788939DC241C613C00E8019F /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		788939DD241C614100E8019F /* Response */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Response;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
