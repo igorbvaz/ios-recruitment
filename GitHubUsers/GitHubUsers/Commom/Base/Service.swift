@@ -29,4 +29,24 @@ class Service {
 
         }
     }
+
+    func requestArray<T: Decodable>(url: String, method: HTTPMethod, parameters: Parameters?) -> Observable<Result<[T]>> {
+        return Observable.create { (observer) -> Disposable in
+
+            let headers = HTTPHeaders(["Authorization":"Bearer \(Keys.authorization)", "Accept":"application/vnd.github.v3+json"])
+
+            AF.request(url, method: method, parameters: parameters, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [T].self) { (response) in
+                switch response.result {
+                case .success:
+                    guard let value = response.value else { return }
+                    observer.onNext(.success(value: value))
+                case let .failure(error):
+                    observer.onNext(.failure(error: error))
+                }
+                observer.onCompleted()
+            }
+            return Disposables.create()
+
+        }
+    }
 }
