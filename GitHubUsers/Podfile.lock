@@ -3,6 +3,8 @@ PODS:
   - AlamofireImage (4.0.2):
     - Alamofire (< 6.0.0, >= 5.0.2)
   - Differentiator (4.0.1)
+  - Nimble (8.0.5)
+  - Quick (2.2.0)
   - R.swift (5.1.0):
     - R.swift.Library (~> 5.1.0)
   - R.swift.Library (5.1.0)
@@ -27,17 +29,22 @@ PODS:
   - RxSwiftExt/RxCocoa (5.2.0):
     - RxCocoa (~> 5.0)
     - RxSwiftExt/Core
+  - RxTest (5.1.0):
+    - RxSwift (~> 5)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - Alamofire
   - AlamofireImage
+  - Nimble
+  - Quick
   - R.swift
   - RxCocoa
   - RxDataSources
   - RxGesture
   - RxSwift
   - RxSwiftExt
+  - RxTest
   - SnapKit
 
 SPEC REPOS:
@@ -45,6 +52,8 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - Differentiator
+    - Nimble
+    - Quick
     - R.swift
     - R.swift.Library
     - RxCocoa
@@ -53,12 +62,15 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - RxSwiftExt
+    - RxTest
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: 3ba7a4db18b4f62c4a1c0e1cb39d7f3d52e10ada
   AlamofireImage: ca7325440303d041a80b7caa55066ba945522378
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  Nimble: 4ab1aeb9b45553c75b9687196b0fa0713170a332
+  Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
   R.swift: 8cbc4fc69b740305b6a17c8a8ed968eb788962d9
   R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
   RxCocoa: 13d2a4d7546a34b8ececae8c281e4ea1dbb94f2b
@@ -67,8 +79,9 @@ SPEC CHECKSUMS:
   RxRelay: a168bd6caf712d00c676ac344e9295afc93b418e
   RxSwift: ad5874f24bb0dbffd1e9bb8443604e3578796c7a
   RxSwiftExt: 4ca80336f43c28f11a2825cdd2fc61dd6c044697
+  RxTest: d5e1c9c1880de2751041fa485d476ce006967b31
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: cfa47b55874b0d1d6732322b288ab1b09aedd8b3
+PODFILE CHECKSUM: 7281785fc68c4475b6ed0a35dcc9961edaf0d9a0
 
 COCOAPODS: 1.5.2

@@ -8,13 +8,10 @@
 
 import UIKit
 
-class Repository: Decodable {
+struct Repository: Decodable {
     var id: Int
-    var node_id: String
     var name: String
     var full_name: String
     var `private`: Bool
-    var owner: BasicUser
-    var html_url: String
     var description: String
 }

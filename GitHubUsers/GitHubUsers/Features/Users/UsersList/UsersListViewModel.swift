@@ -107,9 +107,9 @@ class UsersListViewModel: UsersListViewModelProtocol, UsersListViewModelInputs {
             self?.loadNextPage.onNext(())
         }).disposed(by: disposeBag)
 
-        loadNextPage.withLatestFrom(isSearching).filter { $0 == false }.map { _ in return Void() }.bind(to: loadUsersNextPage).disposed(by: disposeBag)
+        loadNextPage.withLatestFrom(isSearchingBehaviorRelay).filter { $0 == false }.map { _ in return Void() }.bind(to: loadUsersNextPage).disposed(by: disposeBag)
 
-        loadNextPage.withLatestFrom(isSearching).filter { $0 == true }.map { _ in return Void() }.bind(to: loadSearchUsersNextPage).disposed(by: disposeBag)
+        loadNextPage.withLatestFrom(isSearchingBehaviorRelay).filter { $0 == true }.map { _ in return Void() }.bind(to: loadSearchUsersNextPage).disposed(by: disposeBag)
     }
 
 }
