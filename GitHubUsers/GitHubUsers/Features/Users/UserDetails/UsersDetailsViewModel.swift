@@ -12,7 +12,6 @@ import RxCocoa
 
 protocol UserDetailsViewModelInputs {
     var didLoad: PublishSubject<Void> { get }
-    var `deinit`: PublishSubject<Void> { get }
     var loadNextPage: PublishSubject<Void> { get }
 }
 
@@ -39,13 +38,13 @@ class UserDetailsViewModel: UserDetailsViewModelProtocol, UserDetailsViewModelIn
     var outputs: UserDetailsViewModelOutputs { return self }
 
     var didLoad = PublishSubject<Void>()
-    var `deinit` = PublishSubject<Void>()
     var loadNextPage = PublishSubject<Void>()
 
     var disposeBag = DisposeBag()
 
     private var getUserResult: Observable<Result<User>>
 
+    private var repositoriesFinishedBehaviorRelay = BehaviorRelay<Bool>(value: false)
     private var repositoriesResult: Observable<Result<[Repository]>>
     private var repositoriesPageBehaviorRelay = BehaviorRelay<Int>(value: 1)
     private var repositoriesTableIsLoadingPublishSubject = PublishSubject<Bool>()
@@ -56,6 +55,8 @@ class UserDetailsViewModel: UserDetailsViewModelProtocol, UserDetailsViewModelIn
         repositoriesTableIsLoadingPublishSubject = repositoriesTableLoading
         let repositoriesPage = BehaviorRelay<Int>(value: 1)
         repositoriesPageBehaviorRelay = repositoriesPage
+        let repositoriesFinished = BehaviorRelay<Bool>(value: false)
+        repositoriesFinishedBehaviorRelay = repositoriesFinished
 
         // User
         getUserResult = didLoad.flatMapLatest({ _ -> Observable<Result<User>> in
@@ -63,13 +64,15 @@ class UserDetailsViewModel: UserDetailsViewModelProtocol, UserDetailsViewModelIn
         }).share()
 
         // Repositories
-        repositoriesResult = Observable.merge(didLoad, loadNextPage).flatMapLatest({ _ -> Observable<Result<[Repository]>> in
+        repositoriesResult = Observable.merge(didLoad, loadNextPage).filter { _ in return !repositoriesFinished.value }.flatMapLatest({ _ -> Observable<Result<[Repository]>> in
             repositoriesTableLoading.onNext(true)
             return service.repositories(userLogin: userLogin, page: repositoriesPage.value)
         }).share()
 
         repositoriesResult.map { $0.value }.unwrap().bind(onNext: { [weak self] results in
             guard let this = self else { return }
+            repositoriesFinished.accept(results.isEmpty)
+            repositoriesPage.accept(repositoriesPage.value + 1)
             this.repositoriesBehaviorRelay.accept(this.repositoriesBehaviorRelay.value + results)
         }).disposed(by: disposeBag)
 

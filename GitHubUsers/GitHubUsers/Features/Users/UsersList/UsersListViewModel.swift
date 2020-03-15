@@ -48,7 +48,9 @@ class UsersListViewModel: UsersListViewModelProtocol, UsersListViewModelInputs {
 
     var disposeBag = DisposeBag()
     private var getUsersResult: Observable<Result<[BasicUser]>>
+    private var getUsersFinishedBehaviorRelay = BehaviorRelay<Bool>(value: false)
     private var searchUsersResult: Observable<Result<SearchUsersResponse>>
+    private var searchUsersFinishedBehaviorRelay = BehaviorRelay<Bool>(value: false)
     private var usersBehaviorRelay = BehaviorRelay<[BasicUser]>(value: [])
     private var usersTableIsLoadingPublishSubject = PublishSubject<Bool>()
 
@@ -63,14 +65,19 @@ class UsersListViewModel: UsersListViewModelProtocol, UsersListViewModelInputs {
         isSearchingBehaviorRelay = isSearching
         let currentSearchText = BehaviorRelay<String>(value: "")
         currentSearchTextBehaviorRelay = currentSearchText
+        let getUsersFinished = BehaviorRelay<Bool>(value: false)
+        getUsersFinishedBehaviorRelay = getUsersFinished
+        let searchUsersFinished = BehaviorRelay<Bool>(value: false)
+        searchUsersFinishedBehaviorRelay = searchUsersFinished
 
         // Users
-        getUsersResult = Observable.merge(didLoad, loadUsersNextPage).flatMapLatest({ _ -> Observable<Result<[BasicUser]>> in
+        getUsersResult = Observable.merge(didLoad, loadUsersNextPage).filter { _ in return !getUsersFinished.value }.flatMapLatest({ _ -> Observable<Result<[BasicUser]>> in
             usersTableLoading.onNext(true)
             return service.getUsers(lastUserId: usersList.value.last?.id ?? 0)
         }).share()
 
         getUsersResult.map { $0.value }.unwrap().bind(onNext: { results in
+            getUsersFinished.accept(results.isEmpty)
             usersList.accept(usersList.value + results)
         }).disposed(by: disposeBag)
 
@@ -79,12 +86,13 @@ class UsersListViewModel: UsersListViewModelProtocol, UsersListViewModelInputs {
         }).disposed(by: disposeBag)
 
         // Search Users
-        searchUsersResult = loadSearchUsersNextPage.withLatestFrom(searchTextPublishSubject).flatMapLatest({ searchText -> Observable<Result<SearchUsersResponse>> in
+        searchUsersResult = loadSearchUsersNextPage.withLatestFrom(searchTextPublishSubject).filter { _ in return !searchUsersFinished.value }.flatMapLatest({ searchText -> Observable<Result<SearchUsersResponse>> in
             usersTableLoading.onNext(true)
             return service.searchUsers(searchText: searchText, page: seachUsersPage.value)
         }).share()
 
         searchUsersResult.map { $0.value }.unwrap().bind(onNext: { [weak self] results in
+            searchUsersFinished.accept(results.items.isEmpty)
             self?.searchUsersNextPage.accept((self?.searchUsersNextPage.value ?? 0) + 1)
             usersList.accept(usersList.value + results.items)
         }).disposed(by: disposeBag)
@@ -102,6 +110,8 @@ class UsersListViewModel: UsersListViewModelProtocol, UsersListViewModelInputs {
         searchTextPublishSubject.debounce(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance).bind(onNext: { [weak self] text in
             isSearching.accept(!text.isEmpty)
             currentSearchText.accept(text)
+            getUsersFinished.accept(false)
+            searchUsersFinished.accept(false)
             self?.searchUsersNextPage.accept(1)
             self?.usersBehaviorRelay.accept([])
             self?.loadNextPage.onNext(())
