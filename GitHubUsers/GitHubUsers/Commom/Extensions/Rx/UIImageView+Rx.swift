@@ -15,7 +15,7 @@ extension Reactive where Base: UIImageView {
     var imageWithUrl: Binder<String> {
         return Binder(self.base) { control, value in
             guard let url = URL(string: value) else { return }
-            control.af.setImage(withURL: url, placeholderImage: UIImage(systemName: "person"), imageTransition: .crossDissolve(0.5))
+            control.af.setImage(withURL: url, imageTransition: .crossDissolve(0.5))
         }
     }
 }

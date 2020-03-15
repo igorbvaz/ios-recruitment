@@ -128,7 +128,7 @@ extension UsersListViewModel: UsersListViewModelOutputs {
     }
 
     var showUsersListEmptyStateDriver: Driver<Bool> {
-        return Observable.zip(searchBarDidEndPublishSubject, usersBehaviorRelay.map { $0.isEmpty }).map { _ in return true }.asDriver(onErrorJustReturn: true)
+        return Observable.merge(searchBarDidEndPublishSubject, usersBehaviorRelay.map { _ in return Void() }).withLatestFrom(usersBehaviorRelay).map { $0.isEmpty }.asDriver(onErrorJustReturn: false)
     }
 
     var errorDriver: Driver<String> {
