@@ -24,7 +24,12 @@ class LoadingStateView: UIView {
     }
 
     private func setup() {
+        stupAppearance()
         setupStackView()
+    }
+
+    private func stupAppearance() {
+        backgroundColor = R.color.background()
     }
 
     private func setupStackView() {

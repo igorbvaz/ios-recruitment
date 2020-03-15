@@ -15,10 +15,10 @@ struct User: Decodable {
     var gravatar_id: String
     var url: String
     var name: String
-    var company: String
-    var location: String
-    var email: String
-    var bio: String
+    var company: String?
+    var location: String?
+    var email: String?
+    var bio: String?
     var public_repos: Int
     var public_gists: Int
     var followers: Int

@@ -78,6 +78,7 @@ extension UsersListViewController {
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = R.string.localizable.searchGitHubUsers()
         self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     private func setupOutputs() {

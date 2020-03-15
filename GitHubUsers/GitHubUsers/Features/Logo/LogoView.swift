@@ -23,7 +23,7 @@ class LogoView: UIView {
     }
 
     private func setup() {
-        backgroundColor = UIColor.white
+        backgroundColor = R.color.background()
         setupAnimationView()
     }
 }
@@ -38,7 +38,7 @@ extension LogoView {
 
         animationView.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
-            make.width.height.equalTo(232)
+            make.width.height.equalTo(186)
         }
     }
 

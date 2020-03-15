@@ -11,7 +11,6 @@ import UIKit
 struct Repository: Decodable {
     var id: Int
     var name: String
-    var full_name: String
     var `private`: Bool
-    var description: String
+    var description: String?
 }

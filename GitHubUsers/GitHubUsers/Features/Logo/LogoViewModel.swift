@@ -41,6 +41,12 @@ class LogoViewModel: LogoViewModelProtocol, LogoViewModelInputs {
 
 extension LogoViewModel: LogoViewModelOutputs {
     var showAnimation: Driver<String> {
-        return didLoad.map { _ in return "github" }.asDriver(onErrorJustReturn: "")
+        return didLoad.map { _ in
+            if UITraitCollection().userInterfaceStyle == .dark {
+                return "github"
+            } else {
+                return "github-dark"
+            }
+        }.asDriver(onErrorJustReturn: "")
     }
 }

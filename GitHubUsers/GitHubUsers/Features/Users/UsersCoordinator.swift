@@ -22,6 +22,7 @@ class UsersCoordinator: UsersCoordinatorProtocol {
 
     func start() {
         let viewController = UsersListViewController(viewModel: UsersListViewModel(coordinator: self))
+        navigationController.navigationBar.tintColor = R.color.contrast()
         navigationController.pushViewController(viewController, animated: false)
     }
 
@@ -29,7 +30,9 @@ class UsersCoordinator: UsersCoordinatorProtocol {
         guard let path = path as? UsersPath else { return }
         switch path {
         case .details(let basicUser):
-            print(basicUser.login) // TODO:
+            let viewController = UserDetailsViewController(viewModel: UserDetailsViewModel(coordinator: self, userLogin: basicUser.login))
+            navigationController.navigationBar.transparent = true
+                navigationController.pushViewController(viewController, animated: true)
         }
     }
 
