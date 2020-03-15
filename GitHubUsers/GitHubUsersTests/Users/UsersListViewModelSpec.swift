@@ -116,7 +116,7 @@ class UsersListViewModelSpec: QuickSpec {
                 }
 
                 it("should call service's getUsers") {
-                    expect(service.getUsersCalled).toEventually(beTrue())
+                    expect(service.getUsersCalled).toEventually(beTrue(), timeout: 1)
                 }
 
             }
