@@ -15,6 +15,7 @@ target 'GitHubUsers' do
   pod 'AlamofireImage'
   pod 'R.swift'
   pod 'SnapKit'
+  pod 'lottie-ios'
 
   target 'GitHubUsersTests' do
     inherit! :search_paths
