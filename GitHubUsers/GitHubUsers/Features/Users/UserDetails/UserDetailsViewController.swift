@@ -89,7 +89,6 @@ extension UserDetailsViewController {
     private func setupOutputs() {
         viewModel.outputs.photoDriver.drive(mainView.photoImageView.rx.imageWithUrl).disposed(by: disposeBag)
         viewModel.outputs.nameDriver.drive(mainView.nameLabel.rx.text).disposed(by: disposeBag)
-//        viewModel.outputs.nameDriver.drive(title).disposed(by: disposeBag)
         viewModel.outputs.bioDriver.drive(mainView.descriptionLabel.rx.text).disposed(by: disposeBag)
         viewModel.outputs.followersDriver.drive(mainView.followersUserInfoView.bottomLabel.rx.text).disposed(by: disposeBag)
         viewModel.outputs.publicReposDriver.drive(mainView.publicReposUserInfoView.bottomLabel.rx.text).disposed(by: disposeBag)

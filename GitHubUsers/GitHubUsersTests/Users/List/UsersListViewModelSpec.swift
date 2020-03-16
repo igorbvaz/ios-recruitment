@@ -116,7 +116,7 @@ class UsersListViewModelSpec: QuickSpec {
                 }
 
                 it("should call service's getUsers") {
-                    expect(service.getUsersCalled).toEventually(beTrue(), timeout: 1)
+                    expect(service.getUsersCalled).toEventually(beTrue(), timeout: 2)
                 }
 
             }
@@ -128,7 +128,7 @@ class UsersListViewModelSpec: QuickSpec {
                 }
 
                 it("should call service's searchUsers") {
-                    expect(service.searchUsersCalled).toEventually(beTrue())
+                    expect(service.searchUsersCalled).toEventually(beTrue(), timeout: 2)
                 }
 
             }
@@ -230,7 +230,7 @@ class UsersListViewModelSpec: QuickSpec {
                     scheduler.createColdObservable([.next(20, ())]).bind(to: viewModel.loadSearchUsersNextPage).disposed(by: disposeBag)
                     scheduler.start()
                 }
-                it("should output error") {
+                it("should output an error") {
                     expect(errorObserver.events.last?.value.element).toEventually(equal(UsersMock.error.asAFError?.errorDescription ?? ""))
                 }
             }

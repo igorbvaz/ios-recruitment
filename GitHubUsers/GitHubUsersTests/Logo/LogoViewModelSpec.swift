@@ -43,7 +43,7 @@ class LogoViewModelSpec: QuickSpec {
                 }
 
                 it("should show animation") {
-                    expect(showAnimationObserver.events.first?.value.element).to(equal("github"))
+                    expect(showAnimationObserver.events.first?.value.element).to(contain("github"))
                 }
             }
 

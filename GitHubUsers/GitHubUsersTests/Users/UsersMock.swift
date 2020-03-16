@@ -26,8 +26,12 @@ class UsersMock: Mock {
         return User(login: string, id: int, avatar_url: string, gravatar_id: string, url: string, name: string, company: string, location: string, email: string, bio: string, public_repos: int, public_gists: int, followers: int, following: int)
     }
 
+    static var repository: Repository {
+         return Repository(id: int, name: string, private: bool, description: string)
+    }
+
     static var repositoriesArray: [Repository] {
-        return [Repository(id: int, name: string, full_name: string, private: bool, description: string)]
+        return [repository]
     }
 
 }

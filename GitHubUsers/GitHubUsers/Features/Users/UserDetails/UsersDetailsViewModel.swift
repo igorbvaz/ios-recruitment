@@ -98,10 +98,6 @@ extension UserDetailsViewModel: UserDetailsViewModelOutputs {
         return getUserResult.map { $0.value }.unwrap().map { $0.bio }.unwrap().asDriver(onErrorJustReturn: "")
     }
 
-    var locationDriver: Driver<String> {
-        return getUserResult.map { $0.value }.unwrap().map { $0.bio }.unwrap().asDriver(onErrorJustReturn: "")
-    }
-
     var followersDriver: Driver<String> {
         return getUserResult.map { $0.value }.unwrap().map { $0.followers.toK() }.asDriver(onErrorJustReturn: "")
     }
