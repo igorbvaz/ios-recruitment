@@ -79,6 +79,8 @@ extension UsersListViewController {
         searchController.searchBar.placeholder = R.string.localizable.searchGitHubUsers()
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
+
+        viewModel.outputs.searchTextDriver.drive(searchController.searchBar.rx.text).disposed(by: disposeBag)
     }
 
     private func setupOutputs() {
@@ -109,12 +111,11 @@ extension UsersListViewController: UISearchBarDelegate {
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.text = viewModel.currentSearchTextBehaviorRelay.value
         viewModel.inputs.searchBarDidEndPublishSubject.onNext(())
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.inputs.searchTextPublishSubject.onNext("")
+        viewModel.inputs.cancelButtonTappedPublishSubject.onNext(())
     }
 
 }
