@@ -10,8 +10,8 @@ import UIKit
 
 protocol UserDetailsItemViewModelOutputs {
     var name: String { get }
-    var `private`: Bool { get }
     var description: String { get }
+    var stars: String { get }
 }
 class UserDetailsItemViewModel {
 
@@ -27,11 +27,12 @@ extension UserDetailsItemViewModel: UserDetailsItemViewModelOutputs {
     var name: String {
         return repository.name
     }
-    var `private`: Bool {
-        return repository.private
-    }
 
     var description: String {
         return repository.description ?? R.string.localizable.noDescription()
+    }
+
+    var stars: String {
+        return "\(repository.stargazers_count)"
     }
 }
