@@ -40,6 +40,7 @@ class UsersListViewController: ViewController<UsersListView> {
         setupOutputs()
         setupInputs()
         viewModel.inputs.didLoad.onNext(())
+        showMainViewAnimated()
     }
 
 }
