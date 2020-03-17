@@ -40,7 +40,7 @@ class UsersListViewController: ViewController<UsersListView> {
         setupOutputs()
         setupInputs()
         viewModel.inputs.didLoad.onNext(())
-        showMainViewAnimated()
+        showScreenAnimated()
     }
 
 }
@@ -119,4 +119,16 @@ extension UsersListViewController: UISearchBarDelegate {
         viewModel.inputs.cancelButtonTappedPublishSubject.onNext(())
     }
 
+}
+
+extension UsersListViewController {
+
+    func showScreenAnimated() {
+        navigationController?.navigationBar.alpha = 0
+        mainView.tableView.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            self.navigationController?.navigationBar.alpha = 1
+            self.mainView.tableView.alpha = 1
+        }
+    }
 }

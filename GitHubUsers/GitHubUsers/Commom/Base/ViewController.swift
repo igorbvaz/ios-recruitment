@@ -28,13 +28,4 @@ class ViewController<T: UIView>: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
-    func showMainViewAnimated() {
-        navigationController?.navigationBar.alpha = 0
-        mainView.alpha = 0
-        UIView.animate(withDuration: 0.5) {
-            self.navigationController?.navigationBar.alpha = 1
-            self.mainView.alpha = 1
-        }
-    }
 }
