@@ -27,7 +27,7 @@ class UsersMock: Mock {
     }
 
     static var repository: Repository {
-         return Repository(id: int, name: string, private: bool, description: string)
+         return Repository(id: int, name: string, description: string, stargazers_count: int)
     }
 
     static var repositoriesArray: [Repository] {

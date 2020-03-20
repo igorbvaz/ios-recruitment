@@ -40,6 +40,7 @@ class UsersListViewController: ViewController<UsersListView> {
         setupOutputs()
         setupInputs()
         viewModel.inputs.didLoad.onNext(())
+        showScreenAnimated()
     }
 
 }
@@ -79,6 +80,8 @@ extension UsersListViewController {
         searchController.searchBar.placeholder = R.string.localizable.searchGitHubUsers()
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
+
+        viewModel.outputs.searchTextDriver.drive(searchController.searchBar.rx.text).disposed(by: disposeBag)
     }
 
     private func setupOutputs() {
@@ -109,12 +112,23 @@ extension UsersListViewController: UISearchBarDelegate {
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.text = viewModel.currentSearchTextBehaviorRelay.value
         viewModel.inputs.searchBarDidEndPublishSubject.onNext(())
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.inputs.searchTextPublishSubject.onNext("")
+        viewModel.inputs.cancelButtonTappedPublishSubject.onNext(())
     }
 
+}
+
+extension UsersListViewController {
+
+    func showScreenAnimated() {
+        navigationController?.navigationBar.alpha = 0
+        mainView.tableView.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            self.navigationController?.navigationBar.alpha = 1
+            self.mainView.tableView.alpha = 1
+        }
+    }
 }

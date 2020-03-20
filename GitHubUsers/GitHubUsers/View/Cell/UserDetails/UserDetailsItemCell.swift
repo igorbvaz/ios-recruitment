@@ -13,7 +13,8 @@ class UserDetailsItemCell: UITableViewCell {
     var mainStackView = UIStackView()
     var topStackView = UIStackView()
     var nameLabel = UILabel()
-    var privateImageView = UIImageView()
+    var starImageView = UIImageView()
+    var starCountLabel = UILabel()
     var descriptionLabel = UILabel()
 
     var viewModel: UserDetailsItemViewModel! {
@@ -33,8 +34,8 @@ class UserDetailsItemCell: UITableViewCell {
 
     private func bindViewModel() {
         nameLabel.text = viewModel.name
-        privateImageView.isHidden = !viewModel.private
         descriptionLabel.text = viewModel.description
+        starCountLabel.text = viewModel.stars
     }
 
     private func setup() {
@@ -60,9 +61,11 @@ extension UserDetailsItemCell {
         mainStackView.addArrangedSubview(topStackView)
 
         topStackView.axis = .horizontal
+        topStackView.spacing = 2
 
         setupNameLabel()
-        setupPrivateImageView()
+        setupStarImageView()
+        setupStarCountLabel()
     }
 
     private func setupNameLabel() {
@@ -72,10 +75,23 @@ extension UserDetailsItemCell {
         nameLabel.textColor = R.color.textPrimary()
     }
 
-    private func setupPrivateImageView() {
-        topStackView.addArrangedSubview(privateImageView)
+    private func setupStarImageView() {
+        topStackView.addArrangedSubview(starImageView)
 
-        privateImageView.image = UIImage(systemName: "lock")
+        starImageView.image = UIImage(systemName: "star.fill")
+        starImageView.tintColor = R.color.textSecondary()
+        starImageView.contentMode = .scaleAspectFit
+
+        starImageView.snp.makeConstraints { (make) in
+            make.width.equalTo(10)
+        }
+    }
+
+    private func setupStarCountLabel() {
+        topStackView.addArrangedSubview(starCountLabel)
+
+        starCountLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        starCountLabel.textColor = R.color.textSecondary()
     }
 
     private func setupDescriptionLabel() {

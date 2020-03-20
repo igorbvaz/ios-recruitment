@@ -17,6 +17,7 @@ protocol UsersListViewModelInputs {
     var basicUserSelected: PublishSubject<BasicUser> { get }
     var searchTextPublishSubject: PublishSubject<String> { get }
     var searchBarDidEndPublishSubject: PublishSubject<Void> { get }
+    var cancelButtonTappedPublishSubject: PublishSubject<Void> { get }
 }
 
 protocol UsersListViewModelOutputs {
@@ -24,6 +25,7 @@ protocol UsersListViewModelOutputs {
     var showUsersListLoadingStateDriver: Driver<Bool> { get }
     var showUsersListEmptyStateDriver: Driver<Bool> { get }
     var errorDriver: Driver<String> { get }
+    var searchTextDriver: Driver<String> { get }
 }
 
 protocol UsersListViewModelProtocol: ViewModelProtocol {
@@ -39,6 +41,7 @@ class UsersListViewModel: UsersListViewModelProtocol, UsersListViewModelInputs {
     var basicUserSelected = PublishSubject<BasicUser>()
     var searchTextPublishSubject = PublishSubject<String>()
     var searchBarDidEndPublishSubject = PublishSubject<Void>()
+    var cancelButtonTappedPublishSubject = PublishSubject<Void>()
 
     var loadUsersNextPage = PublishSubject<Void>()
     var loadSearchUsersNextPage = PublishSubject<Void>()
@@ -106,17 +109,26 @@ class UsersListViewModel: UsersListViewModelProtocol, UsersListViewModelInputs {
             coordinator.route(path: UsersPath.details(basicUser: basicUser))
         }).disposed(by: disposeBag)
 
-        // Other
-        searchTextPublishSubject.debounce(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance).bind(onNext: { [weak self] text in
-            isSearching.accept(!text.isEmpty)
-            currentSearchText.accept(text)
-            getUsersFinished.accept(false)
-            searchUsersFinished.accept(false)
-            self?.searchUsersNextPage.accept(1)
-            self?.usersBehaviorRelay.accept([])
-            self?.loadNextPage.onNext(())
+        // Search
+        searchTextPublishSubject.filter { $0 != currentSearchText.value }.debounce(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance).bind(onNext: { [weak self] text in
+                isSearching.accept(!text.isEmpty)
+                currentSearchText.accept(text)
+                getUsersFinished.accept(false)
+                searchUsersFinished.accept(false)
+                self?.searchUsersNextPage.accept(1)
+                self?.usersBehaviorRelay.accept([])
+                self?.loadNextPage.onNext(())
         }).disposed(by: disposeBag)
 
+        cancelButtonTappedPublishSubject.subscribe(onNext: { [weak self] _ in
+            self?.searchTextPublishSubject.onNext("")
+        }).disposed(by: disposeBag)
+
+        searchBarDidEndPublishSubject.subscribe(onNext: { _ in
+            currentSearchText.accept(currentSearchText.value)
+        }).disposed(by: disposeBag)
+
+        // Pagination
         loadNextPage.withLatestFrom(isSearchingBehaviorRelay).filter { $0 == false }.map { _ in return Void() }.bind(to: loadUsersNextPage).disposed(by: disposeBag)
 
         loadNextPage.withLatestFrom(isSearchingBehaviorRelay).filter { $0 == true }.map { _ in return Void() }.bind(to: loadSearchUsersNextPage).disposed(by: disposeBag)
@@ -143,5 +155,9 @@ extension UsersListViewModel: UsersListViewModelOutputs {
 
     var errorDriver: Driver<String> {
         return Observable.merge(getUsersResult.map { ($0.error?.asAFError?.errorDescription ?? "")}, searchUsersResult.map { $0.error?.asAFError?.errorDescription ?? "" }) .asDriver(onErrorJustReturn: "")
+    }
+
+    var searchTextDriver: Driver<String> {
+        return currentSearchTextBehaviorRelay.asDriver()
     }
 }

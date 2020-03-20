@@ -40,7 +40,16 @@ extension LogoViewController {
             self?.mainView.animationView.animation = Animation.named(animationName)
             self?.mainView.animationView.play(completion: { (completed) in
                 if completed {
-                    self?.viewModel.inputs.didFinishAnimation.onNext(())
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self?.mainView.animationView.transform = .init(scaleX: 0.9, y: 0.9)
+                    }) { (completed) in
+                        UIView.animate(withDuration: 0.5, animations: {
+                            self?.mainView.animationView.transform = .init(scaleX: 10, y: 10)
+                        }) { (completed) in
+                            self?.viewModel.inputs.didFinishAnimation.onNext(())
+                        }
+                    }
+
                 }
             })
         }).disposed(by: disposeBag)
